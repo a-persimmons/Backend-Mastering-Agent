@@ -8,6 +8,10 @@
 
 可将 API、scheduler、worker、model gateway、sandbox 分成逻辑组件，初期同进程或同部署，容量需要时再独立伸缩。会话和任务状态外置；worker drain 防止发布时丢任务，lease 过期可重领。队列积压、下游限额、并发 slots 共同决定扩容。HA 不仅是多个 pod，还包括存储、队列、依赖的故障域与恢复目标。
 
+![Agent Runtime / Platform 部署架构](../../assets/diagrams/runtime-platform.svg)
+
+*图：组件是逻辑边界，不一定都是独立微服务。先从单体或少量部署开始，再根据容量和故障域分离 API、调度器、Worker 与网关。*
+
 ## 2. 贯穿项目中的例子
 
 设计 API + worker + PostgreSQL + Redis/MQ 的初始架构。用户请求创建 run 后得到 id；worker 消费任务，提交事件，API SSE 重放。目标规模用假设标注，区分每秒新 run、在途 run、模型 RPM/TPM。

@@ -6,12 +6,9 @@
 
 输入自然语言工单，查询知识库、检查模拟服务状态、给出引用、必要时创建模拟工单。禁止自动执行真实生产变更；写操作需要明确审批和幂等键。
 
-```text
-Client → API / SSE → Agent Run → Model Adapter
-                         ├→ Context / Memory
-                         ├→ Tool Dispatcher → Mock IT API
-                         └→ Events / Checkpoint / Evals
-```
+![企业工单 Agent：贯穿项目目标架构](./assets/diagrams/ticket-architecture.svg)
+
+*图：这是后续阶段逐步实现的目标架构，不代表 V0.1 实验代码已经包含所有组件。写操作经过审批与幂等控制。*
 
 | 版本 | 对应课程 | 可验证交付 |
 | --- | --- | --- |

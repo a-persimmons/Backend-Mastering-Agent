@@ -8,6 +8,10 @@
 
 Trace 以 run 为根，模型、工具、检索、调度为 span；跨异步队列传播 context。Metrics 建议 run_success_rate、queue_wait、TTFT、run_duration、tool_errors、tokens、inflight。不要将 run_id 或 user_id 放在高基数指标标签；详细标识进入权限受控日志。采样、脱敏、保留期与追踪费用也要设计。
 
+![一次 Agent Run 的观测与评估](../../assets/diagrams/trace-and-eval.svg)
+
+*图：Trace 解释时间花在哪里；Metrics 描述系统总体表现；Evals 判断任务和轨迹是否正确。三者通过 run_id 在受控日志中关联。*
+
 ## 2. 贯穿项目中的例子
 
 教学 SLO：只读工单 95% 在 30 秒内成功且引用正确。分开衡量模型等待、调度等待、工具耗时、输出验证。写操作安全违规单独告警，不用平均值掩盖风险。

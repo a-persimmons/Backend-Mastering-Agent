@@ -8,6 +8,10 @@
 
 Run 状态可设计为 QUEUED/RUNNING/WAITING_APPROVAL/SUCCEEDED/FAILED/CANCELLED。终态不可逆。每个事件带 run_id、seq、timestamp、kind、schema_version；状态通过事件折叠。并发写入使用事务、唯一约束和版本检查。事件先持久化再发布；客户端按 seq 去重。
 
+![Run 状态机：显式终态与审批](../../assets/diagrams/run-state.svg)
+
+*图：排队后进入运行；审批通过才恢复运行，拒绝可进入失败。排队和等待审批同样需要支持取消，所有终态不可逆。*
+
 ## 2. 贯穿项目中的例子
 
 模型提议工具调用后，先写 ToolRequested，再检查权限；写操作需要 ApprovalGranted，执行后 ToolCompleted，最后 RunSucceeded。不能因为 SSE 丢包而改变数据库状态。

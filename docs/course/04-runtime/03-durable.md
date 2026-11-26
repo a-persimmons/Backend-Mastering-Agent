@@ -8,6 +8,10 @@
 
 Checkpoint 是某时刻状态；事件日志提供 replay 和审计。步骤需有稳定 step_id、状态和尝试次数。任务领取采用 lease 或消息可见性超时，处理至少一次投递。事务 outbox 解决本地状态和消息发布双写；外部 API 仍需要幂等或补偿。Temporal workflow 需保持确定性，LLM 与外部 I/O 放在 activity。
 
+![持久化执行与外部副作用](../../assets/diagrams/durable-execution.svg)
+
+*图：关键故障窗口在外部写入成功、但本地尚未提交结果之间。恢复时用稳定幂等键查询或安全重试，不能承诺任意外部系统 exactly-once。*
+
 ## 2. 贯穿项目中的例子
 
 写工单前持久化 step_id，使用供应商 idempotency_key。若写成功后进程崩溃，重启查询该键或安全重复请求，再提交结果；不要再次询问模型生成新的写操作。

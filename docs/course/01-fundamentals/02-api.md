@@ -8,6 +8,10 @@
 
 接口至少需要 request(messages, tools, deadline) 和 stream(request)。流式 delta 不是完整消息：工具参数可能分片，只有结束事件后才能解析。区分首 token 延迟、流结束延迟和端到端任务延迟；客户端断线应传递取消信号，不能默默继续消耗预算。
 
+![流式模型响应与工具参数重组](../../assets/diagrams/streaming-events.svg)
+
+*图：流式 delta 先累积，工具参数完整后才解析、校验和执行。断线或超时要传播取消。*
+
 ## 2. 贯穿项目中的例子
 
 使用内部事件 text_delta、tool_call_delta、completed、failed。服务端生成 run_id 和 seq；客户端按序消费。遇到 429 尊重 Retry-After，退避并限制总 deadline，已产生副作用的请求不要盲目重试。

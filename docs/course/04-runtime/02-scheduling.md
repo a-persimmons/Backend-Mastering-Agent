@@ -8,6 +8,10 @@
 
 区分 admission control、队列、worker slots 和下游限额。有限队列满时明确返回 429/503 或等待入队，设置 deadline。采用每租户并发配额、加权公平队列，防止大租户独占。重试进入预算并增加 jitter，避免重试风暴。Little 定律 L=λW 只适用于稳定且口径一致的系统。
 
+![调度器：入口限流与背压](../../assets/diagrams/scheduler-backpressure.svg)
+
+*图：队列必须有容量限制；租户配额、worker slots 和供应商限额共同决定系统的有效吞吐。*
+
 ## 2. 贯穿项目中的例子
 
 100 QPS、平均 run 30 秒，稳定时平均 3000 个在途 run；若每 run 平均 5 次模型调用，平均需求 500 calls/s，不代表 3000 个线程。若供应商限额 300 calls/s，需要限流或降载。

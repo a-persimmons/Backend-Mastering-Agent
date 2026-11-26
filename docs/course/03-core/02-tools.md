@@ -8,6 +8,10 @@ Dispatcher 是模型意图到真实执行之间的可信边界。
 
 顺序为 schema 校验 → 身份/租户授权 → 风险判定 → 审批 → timeout/bulkhead → 幂等执行 → 结果脱敏 → 事件记录。读取和写入工具策略不同；只有可安全重试的错误才自动重试。外部写成功但响应丢失时，先查状态或使用 idempotency key。
 
+![Tool Dispatcher：可信执行边界](../../assets/diagrams/tool-dispatcher.svg)
+
+*图：模型只能提出工具意图；校验、授权、审批、超时和幂等由程序执行。任一检查不通过即拒绝，不接触真实工具。*
+
 ## 2. 贯穿项目中的例子
 
 create_ticket 通过唯一键 (tenant_id, operation_id) 去重。审批绑定工具名、规范化参数哈希及有效期，修改参数后重新审批。禁止模型传入任意 URL 或命令。

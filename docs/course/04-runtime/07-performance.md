@@ -8,6 +8,10 @@
 
 先分解 latency：排队、context 构造、模型推理、工具、持久化、输出。再看资源：CPU、RSS、GC、event loop lag、连接数、GPU 或 API 限额。比较 Python/Go/Java 时使用同一协议、负载、机器、并发限制和模型模拟服务；避免把外部模型波动当语言差异。闭环负载可能掩盖排队，使用固定到达率并报告拒绝和超时。
 
+![性能瓶颈定位与语言选型](../../assets/diagrams/performance-diagnosis.svg)
+
+*图：先测耗时和资源，再定位热点。仅当运行时自身是主要瓶颈且替代方案经同负载实验验证时，才考虑重写关键组件。*
+
 ## 2. 贯穿项目中的例子
 
 分别运行 Python asyncio 和已有 Java/Go 的 worker 原型，模拟 200ms I/O 与 20ms CPU 两种工作负载，逐级提高到达率。比较吞吐、P50/P95/P99、RSS、CPU、成功率和维护复杂度。

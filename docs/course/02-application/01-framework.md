@@ -8,6 +8,10 @@
 
 Agents SDK 提供运行、工具、会话和追踪抽象；LangGraph 强调图、状态和持久化。对已知路径用明确节点，对不确定子任务使用 Agent。明确每个节点的输入输出和副作用，避免所有逻辑都塞进一个 prompt。
 
+![Workflow 与 Agent 的组合](../../assets/diagrams/workflow-agent.svg)
+
+*图：确定性流程约束业务路径；只有开放任务交给 Agent 动态决策，权限和审批仍由程序控制。*
+
 ## 2. 贯穿项目中的例子
 
 工单流程：分类 → 检索 → 诊断 → 审批 → 反馈。分类可用模型，权限和审批必须确定性实现。用图状态保存 ticket_id、evidence_ids、approval_status。

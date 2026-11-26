@@ -8,6 +8,10 @@ Agent 的并发不仅是请求 QPS，还包括长生命周期 run、模型流、
 
 I/O 等待与 CPU 工作分开。Python asyncio 适合非阻塞 I/O，但同步 SDK、CPU 重任务会阻塞事件循环；Go goroutine、Java virtual threads 等也需要有界资源。每个外部依赖单独设 semaphore、连接池、deadline。SSE 慢客户端需要缓冲上限、断线重连与事件重放，而非无限积压。
 
+![有界并发与流式订阅](../../assets/diagrams/bounded-concurrency.svg)
+
+*图：Run 并发、模型并发、工具并发是不同资源池；慢客户端需要独立的缓冲限制和重放机制。*
+
 ## 2. 贯穿项目中的例子
 
 100 个 run 同时各调用 3 个工具，不能直接无限 gather；限制模型并发 20、工具并发 10，取消时传播到下游。用 seq 恢复 SSE，客户端断线与任务取消不是同一个语义。
