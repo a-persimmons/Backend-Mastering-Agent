@@ -1,0 +1,10 @@
+:root {
+  --vp-c-brand-1: #087f73;
+  --vp-c-brand-2: #096b62;
+  --vp-c-brand-3: #087f73;
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(110deg, #087f73, #2563eb);
+}
+.dark { --vp-c-brand-1: #5eead4; --vp-c-brand-2: #2dd4bf; --vp-c-brand-3: #0f766e; }
+.vp-doc h2 { margin-top: 42px; }
+.vp-doc p, .vp-doc li { line-height: 1.85; }
